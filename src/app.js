@@ -31,11 +31,36 @@ app.post("/repositories", (request, response) => {
 });
 
 app.put("/repositories/:id", (request, response) => {
-  // TODO
+  const { titlew, url, techs } = request.body;
+  const { id } = request.params;
+
+  const findRepositoryIndex = repositories.findIndex(repository => repository.id === id);
+
+  const repository = {
+    id,
+    title,
+    url,
+    techs,
+  };
+
+  repositories[findRepositoryIndex] = repository
+
+  return response.json(repository);
 });
 
 app.delete("/repositories/:id", (request, response) => {
-  // TODO
+  const { id } = request.params;
+
+  const findRepositoryIndex = repositories.findIndex(repository => repository.id === id);
+
+  if (findRepositoryIndex >= 0) {
+    repositories.splice(findRepositoryIndex, 1);
+  } else {
+    return response.status(400).json({ error: 'Repositorio nao encontrado'})
+  }
+
+  return response.status(204).send();
+  
 });
 
 app.post("/repositories/:id/like", (request, response) => {
